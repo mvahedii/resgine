@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /Users/mohammad/Projects/ 2>/dev/null)",
+      "Read(//Users/mohammad/Projects/**)",
+      "Bash(npm info *)",
+      "Bash(npm init *)",
+      "Bash(npm install *)"
+    ]
+  }
+}
