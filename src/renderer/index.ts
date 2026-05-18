@@ -17,5 +17,5 @@ export async function renderResume(resume: Resume, outputPath: string): Promise<
   renderSkills(doc, resume.skills);
   renderProjects(doc, resume.projects);
 
-  await saveDocument(doc, outputPath);
+  async saveDocument(doc, outputPath);
 }
