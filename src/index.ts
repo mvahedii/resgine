@@ -10,7 +10,7 @@ const program = new Command();
 program
   .name('resume-build')
   .description('Generate a PDF resume from a Markdown file')
-  .version('1.0.0')
+  .version('0.0.1')
   .argument('<input>', 'Path to the .md resume file')
   .option('-o, --output <file>', 'Output PDF file path')
   .action(async (input: string, options: { output?: string }) => {
