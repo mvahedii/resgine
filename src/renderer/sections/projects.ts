@@ -17,16 +17,13 @@ export function renderProjects(doc: Doc, entries: Project[]): void {
 
     // Title + optional link on same line
     if (entry.link) {
-      const titleWidth = doc
-        .font(THEME.fonts.bold)
-        .fontSize(THEME.sizes.entryHead)
-        .widthOfString(`${entry.title}  `);
-
       doc
         .font(THEME.fonts.bold)
         .fontSize(THEME.sizes.entryHead)
         .fillColor(THEME.colors.body)
-        .text(entry.title, THEME.page.margins.left, doc.y, { continued: true, lineBreak: false });
+        .text(`${entry.title}  `, THEME.page.margins.left, doc.y, {
+          continued: true,
+        });
 
       doc
         .font(THEME.fonts.regular)
@@ -35,10 +32,7 @@ export function renderProjects(doc: Doc, entries: Project[]): void {
         .text(entry.linkText ?? entry.link, {
           link: entry.link,
           underline: true,
-          lineBreak: false,
         });
-
-      doc.moveDown();
     } else {
       doc
         .font(THEME.fonts.bold)
