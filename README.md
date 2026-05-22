@@ -42,7 +42,7 @@ npx tsx src/index.ts example/resume.md
 
 | Flag | Description |
 |------|-------------|
-| `-o, --output <file>` | Output PDF path (defaults to `<input>.pdf` next to the source file) |
+| `-o, --output <file>` | Output PDF path (defaults to `<input>.pdf` in the current working directory) |
 | `-V, --version` | Print version |
 | `-h, --help` | Show help |
 
