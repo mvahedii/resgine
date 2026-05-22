@@ -1,0 +1,31 @@
+{
+  "name": "@resgine/cli",
+  "version": "0.1.0",
+  "description": "Command-line interface for the Resgine resume rendering engine",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "resume": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "dependencies": {
+    "@resgine/core": "workspace:*",
+    "@resgine/layout": "workspace:*",
+    "@resgine/pdf-renderer": "workspace:*",
+    "@resgine/schema": "workspace:*",
+    "@resgine/theme-modern": "workspace:*",
+    "@resgine/validator": "workspace:*",
+    "commander": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.8.0"
+  }
+}

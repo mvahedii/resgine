@@ -1,13 +1,13 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "outDir": "dist",
-    "rootDir": "src",
-    "strict": true,
-    "declaration": true,
-    "skipLibCheck": true
-  },
-  "include": ["src"]
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    { "path": "./packages/layout" },
+    { "path": "./packages/core" },
+    { "path": "./packages/schema" },
+    { "path": "./packages/validator" },
+    { "path": "./packages/pdf-renderer" },
+    { "path": "./packages/theme-modern" },
+    { "path": "./packages/cli" }
+  ]
 }

@@ -1,28 +1,23 @@
 {
-  "name": "resume-builder",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "resgine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A schema-driven, themeable, JSON-based resume rendering engine",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.18"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "commander": "^14.0.3",
-    "gray-matter": "^4.0.3",
-    "mdast-util-to-string": "^4.0.0",
-    "pdfkit": "^0.18.0",
-    "remark-parse": "^11.0.0",
-    "unified": "^11.0.5",
-    "unist-util-visit": "^5.1.0"
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b",
+    "clean": "tsc -b --clean",
+    "resume": "tsx packages/cli/src/index.ts",
+    "dev:example": "tsx packages/cli/src/index.ts build examples/resume.json -o examples/resume.pdf",
+    "dev:schema": "tsx packages/cli/src/index.ts schema -o examples/resume.schema.json"
   },
   "devDependencies": {
     "@types/node": "^25.8.0",
-    "@types/pdfkit": "^0.17.6",
-    "tsup": "^8.5.1",
     "tsx": "^4.22.1",
     "typescript": "^6.0.3"
   },

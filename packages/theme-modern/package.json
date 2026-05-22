@@ -1,0 +1,21 @@
+{
+  "name": "@resgine/theme-modern",
+  "version": "0.1.0",
+  "description": "The Modern theme for Resgine — a clean, single-column resume theme",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "dependencies": {
+    "@resgine/core": "workspace:*",
+    "@resgine/layout": "workspace:*",
+    "@resgine/schema": "workspace:*"
+  }
+}

@@ -1,0 +1,372 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "personal-info"
+              },
+              "title": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Full name"
+                  },
+                  "headline": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Professional headline, e.g. \"Senior Software Engineer\""
+                  },
+                  "email": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Contact email address"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Contact phone number"
+                  },
+                  "location": {
+                    "type": "string",
+                    "description": "City, country"
+                  },
+                  "links": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Link label, e.g. \"GitHub\""
+                        },
+                        "url": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Fully-qualified URL"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "url"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "External profile links"
+                  }
+                },
+                "required": [
+                  "name",
+                  "headline",
+                  "email"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "data"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "summary"
+              },
+              "title": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Professional summary"
+                  }
+                },
+                "required": [
+                  "body"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "data"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "experience"
+              },
+              "title": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Job title"
+                        },
+                        "company": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Employer name"
+                        },
+                        "period": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "e.g. \"2021 — Present\""
+                        },
+                        "location": {
+                          "type": "string",
+                          "description": "Job location"
+                        },
+                        "highlights": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "description": "Accomplishment bullet points"
+                        }
+                      },
+                      "required": [
+                        "role",
+                        "company",
+                        "period"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "data"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "education"
+              },
+              "title": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "degree": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Degree or qualification"
+                        },
+                        "institution": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "School or university"
+                        },
+                        "period": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "e.g. \"2014 — 2018\""
+                        },
+                        "details": {
+                          "type": "string",
+                          "description": "Optional notes, e.g. GPA or honours"
+                        }
+                      },
+                      "required": [
+                        "degree",
+                        "institution",
+                        "period"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "data"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "skills"
+              },
+              "title": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Skill group name"
+                        },
+                        "items": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "description": "Individual skills"
+                        }
+                      },
+                      "required": [
+                        "category",
+                        "items"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "data"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "projects"
+              },
+              "title": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Project name"
+                        },
+                        "url": {
+                          "type": "string",
+                          "description": "Project URL"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Short project description"
+                        },
+                        "highlights": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "description": "Notable details"
+                        }
+                      },
+                      "required": [
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "data"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "sections"
+  ],
+  "additionalProperties": false
+}
