@@ -6,9 +6,6 @@ import { z } from 'zod';
  * Field builders are the vocabulary for declaring section shapes. Each builder
  * returns a {@link FieldDef} that knows (a) its semantic kind, (b) whether it
  * is required, and (c) how to produce a Zod schema for runtime validation.
- *
- * Requiredness is encoded in the *type* (`TRequired`) via builder overloads, so
- * `InferFields` can make required keys mandatory and optional keys optional.
  */
 
 export type FieldKind =
@@ -24,7 +21,6 @@ export interface FieldDef<TValue, TRequired extends boolean = boolean> {
   readonly kind: FieldKind;
   readonly required: TRequired;
   readonly description?: string;
-  /** Build the Zod schema for this field's value (independent of requiredness). */
   toZod(): z.ZodType;
   /** Phantom marker — never present at runtime — that carries the value type. */
   readonly __value?: TValue;

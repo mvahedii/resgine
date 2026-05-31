@@ -7,9 +7,7 @@ import type { Theme, ThemeContext } from './theme.js';
  */
 
 export interface ComposeResult {
-  /** The root layout node for the whole resume. */
   tree: LayoutNode;
-  /** Non-fatal issues encountered while composing (e.g. unknown sections). */
   warnings: string[];
 }
 

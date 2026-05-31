@@ -1,5 +1,5 @@
-import { validate } from '@resgine/validator';
-import { loadJsonFile, printDiagnostics } from '../util.js';
+import { validate } from "@resgine/validator";
+import { loadJsonFile, printDiagnostics } from "../util.js";
 
 /**
  * `resume validate` — check a resume JSON file against the schema and print

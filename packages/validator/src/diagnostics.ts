@@ -7,11 +7,8 @@ import type { z } from 'zod';
  */
 export interface Diagnostic {
   severity: 'error' | 'warning';
-  /** Section type the problem belongs to, when known. */
   section?: string;
-  /** Index of the section within the document, when applicable. */
   index?: number;
-  /** Dotted field path within the section's data, when applicable. */
   field?: string;
   message: string;
 }

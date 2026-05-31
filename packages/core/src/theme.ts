@@ -1,4 +1,4 @@
-import type { LayoutNode, PageConfig } from '@resgine/layout';
+import type { LayoutNode, PageConfig } from "@resgine/layout";
 
 /**
  * The theme system.
@@ -7,15 +7,10 @@ import type { LayoutNode, PageConfig } from '@resgine/layout';
  * structure and layout. A theme receives semantic section data and returns
  * abstract layout nodes — it never touches PDFKit or any renderer directly.
  */
-
-/** A named, semantic typography style. Resolved to a concrete font at render. */
 export interface TypeStyle {
-  /** Concrete renderer font key (PDF renderer: a PDFKit standard font name). */
   font: string;
   size: number;
-  /** Line-height multiplier. */
   lineHeight?: number;
-  /** Default color; renderers fall back to this when a node omits a color. */
   color?: string;
 }
 
@@ -29,19 +24,16 @@ export interface ThemeTokens {
   typography: Record<string, TypeStyle>;
 }
 
-/** Everything a section renderer is handed besides the section data. */
 export interface ThemeContext {
   tokens: ThemeTokens;
   page: PageConfig;
 }
 
-/** Turns one section's semantic data into a layout subtree. */
 export type SectionRenderer<TData = unknown> = (
   data: TData,
   ctx: ThemeContext,
 ) => LayoutNode;
 
-/** A fully constructed, ready-to-use theme. */
 export interface Theme {
   id: string;
   name: string;
@@ -65,7 +57,6 @@ export type ThemeRenderers<TMap extends Record<string, unknown>> = {
 
 export interface ThemeDefinition<TMap extends Record<string, unknown>> {
   id: string;
-  /** Human-facing name. Defaults to `id`. */
   name?: string;
   page: PageConfig;
   tokens: ThemeTokens;
