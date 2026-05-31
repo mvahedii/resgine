@@ -1,0 +1,24 @@
+{
+  "name": "@resgine/pdf-renderer",
+  "version": "0.1.0",
+  "description": "PDFKit-based renderer that draws Resgine layout trees to PDF",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "dependencies": {
+    "@resgine/layout": "workspace:*",
+    "pdfkit": "^0.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "@types/pdfkit": "^0.17.6"
+  }
+}

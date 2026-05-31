@@ -1,164 +1,155 @@
-# resume-build
+# Resgine
 
-A CLI tool that converts a Markdown resume into a polished PDF using [PDFKit](https://pdfkit.org/) — no headless browser, no LaTeX, no dependencies beyond Node.
+A **schema-driven, themeable, JSON-based resume rendering engine**.
 
-## How it works
+Resgine turns a validated JSON resume into a polished PDF. There is no Markdown,
+no HTML, and no headless browser — a JSON document flows through a strict
+pipeline and is drawn directly with [PDFKit](https://pdfkit.org/).
 
 ```
-resume.md  →  [Parser]  →  Resume (typed AST)  →  [Renderer]  →  output.pdf
+JSON Resume  →  Schema Validation  →  Normalized IR  →  Layout Tree  →  PDF
 ```
 
-1. **Parser** — strips YAML frontmatter (contact info), then walks the Markdown AST section-by-section (`## Summary`, `## Work Experience`, etc.) and maps each block into a typed `Resume` object.
-2. **Renderer** — iterates the `Resume` object and draws each section onto a PDFKit document using a shared theme (fonts, colors, spacing). The document is piped to a write stream and saved to disk.
+## Why
 
-## Usage
+- **Deterministic** — no browser, no layout engine drift, fixed metadata. The
+  same input produces the same PDF.
+- **Themeable** — themes control typography, spacing, layout and section
+  structure. A theme emits abstract layout nodes; it never touches PDFKit.
+- **Schema-driven** — sections are declared with a typed DSL. Custom sections
+  need no engine changes.
+- **Strongly typed** — every stage is fully typed; theme renderers receive
+  typed section data inferred from the schema.
 
-### Build the CLI
+## Quick start
 
 ```bash
 pnpm install
-pnpm dlx tsup   # or: npx tsup
+
+# Render the example resume to examples/resume.pdf
+pnpm dev:example
+
+# Or drive the CLI directly (no build step — runs through tsx)
+pnpm resume validate examples/resume.json
+pnpm resume build    examples/resume.json -o out.pdf
+pnpm resume themes
+pnpm resume init     my-resume.json
+pnpm resume schema -o examples/resume.schema.json
 ```
 
-This produces `dist/index.js` (a self-contained CJS bundle with a shebang).
+`pnpm build` compiles every package (`tsc -b`) into publishable `dist/` output.
 
-### Run
+## Architecture
 
-```bash
-node dist/index.js <input.md> [options]
+Resgine is a pnpm monorepo. Each pipeline stage is its own package with a
+single responsibility and an acyclic dependency graph:
 
-# Examples
-node dist/index.js example/resume.md
-node dist/index.js example/resume.md -o my-resume.pdf
+| Package | Role | Depends on |
+|---|---|---|
+| [`@resgine/layout`](packages/layout) | Renderer-agnostic layout primitives (`VBox`, `HBox`, `Text`, `Spacer`, `Divider`, `BulletList`) + measurement seam | — |
+| [`@resgine/schema`](packages/schema) | Field DSL, `defineSection`, standard sections, resume Zod schema, JSON Schema export | `zod` |
+| [`@resgine/core`](packages/core) | Semantic resume IR, theme system (`defineTheme`), IR→layout composition | `layout` |
+| [`@resgine/validator`](packages/validator) | `validate()` — Zod parsing, structured diagnostics, IR normalization | `core`, `schema` |
+| [`@resgine/pdf-renderer`](packages/pdf-renderer) | Draws a layout tree to PDF with PDFKit; block-level pagination | `layout`, `pdfkit` |
+| [`@resgine/theme-modern`](packages/theme-modern) | The reference theme | `core`, `layout`, `schema` |
+| [`@resgine/cli`](packages/cli) | `resume build / validate / init / themes / schema` | all of the above |
+
+### Layered design
+
+1. **Resume IR is semantic only.** It carries no font sizes, colors or
+   coordinates — only meaning (`{ type, data }`).
+2. **Themes resolve meaning into layout.** A theme owns tokens (typography,
+   spacing, colors) and per-section renderers that return abstract layout
+   nodes carrying *resolved* styles.
+3. **Renderers draw layout.** The PDF renderer consumes layout nodes and knows
+   nothing about themes or resumes. Any other backend implementing the same
+   node walk + `MeasureContext` could replace it.
+
+## The resume format
+
+A resume is a versioned, ordered list of typed sections:
+
+```json
+{
+  "$schema": "./resume.schema.json",
+  "schemaVersion": "1.0",
+  "sections": [
+    { "type": "personal-info", "data": { "name": "Ada Lovelace", "...": "..." } },
+    { "type": "summary",       "data": { "body": "..." } },
+    { "type": "experience",    "data": { "items": [ "..." ] } }
+  ]
+}
 ```
 
-During development you can run without building:
+Standard sections: `personal-info`, `summary`, `experience`, `education`,
+`skills`, `projects`. See [`examples/resume.json`](examples/resume.json) for a
+complete document. Run `resume schema` to generate the JSON Schema and point
+`$schema` at it for editor autocomplete and inline validation.
 
-```bash
-npx tsx src/index.ts example/resume.md
+## Defining a section
+
+Sections are declared with a typed field DSL — the standard sections use the
+exact same API, so they are not privileged:
+
+```ts
+import { defineSection, text, list, group } from '@resgine/schema';
+
+export const awardsSection = defineSection({
+  type: 'awards',
+  title: 'Awards',
+  fields: {
+    items: list(
+      group({
+        name: text({ required: true }),
+        year: text({ required: true }),
+        note: text(),
+      }),
+      { required: true },
+    ),
+  },
+});
 ```
 
-### Options
+## Authoring a theme
 
-| Flag | Description |
-|------|-------------|
-| `-o, --output <file>` | Output PDF path (defaults to `<input>.pdf` in the current working directory) |
-| `-V, --version` | Print version |
-| `-h, --help` | Show help |
+A theme is design tokens plus per-section renderers. Renderers receive typed,
+semantic section data and return abstract layout nodes — never PDFKit calls:
 
-## Resume format
+```ts
+import { defineTheme } from '@resgine/core';
+import { L } from '@resgine/layout';
+import type { SectionDataMap } from '@resgine/schema';
 
-Write your resume in Markdown with a YAML frontmatter block at the top.
-
-```markdown
----
-name: Jane Smith
-title: Software Engineer
-email: jane@example.com
-phone: "+1 (555) 000-0000"
-linkedin: linkedin.com/in/janesmith
-github: github.com/janesmith
-location: San Francisco, CA
----
-
-## Summary
-
-One-paragraph professional summary.
-
-## Work Experience
-
-### Role @ Company
-*Month YYYY – Month YYYY | Location*
-
-- Bullet point
-- Bullet point
-
-## Education
-
-### Degree | Institution
-*YYYY – YYYY*
-
-## Skills
-
-**Category:** Item, Item, Item
-
-## Projects
-
-### Project Name
-*[link-text](https://url)*
-
-Short description.
-
-- Bullet point
+export const myTheme = defineTheme<SectionDataMap>({
+  id: 'my-theme',
+  page: { size: 'A4', margins: { top: 52, right: 56, bottom: 52, left: 56 } },
+  tokens: { colors: { /* ... */ }, spacing: { /* ... */ }, typography: { /* ... */ } },
+  renderers: {
+    summary: (data, ctx) =>
+      L.text(data.body, {
+        font: 'Helvetica',
+        size: 10,
+        color: ctx.tokens.colors.body,
+      }),
+    // ...one renderer per section type
+  },
+});
 ```
 
-### Frontmatter fields
+[`@resgine/theme-modern`](packages/theme-modern) is a complete reference
+implementation.
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `name` | yes | Full name (large heading) |
-| `title` | yes | Job title shown under name |
-| `email` | yes | Contact email |
-| `phone` | no | Phone number |
-| `linkedin` | no | LinkedIn URL or handle |
-| `github` | no | GitHub URL or handle |
-| `location` | no | City, State |
+## Extensibility
 
-### Sections
+- **New sections** — call `defineSection` and add a matching theme renderer.
+- **Community themes** — a theme is a standalone package depending only on
+  `core`, `layout` and `schema`. The CLI registry is the seam for resolving a
+  theme by npm package name.
+- **Pagination & layout** — `MeasureContext` abstracts measurement; a future
+  standalone layout/pagination engine can plug in without a renderer.
+- **Alternate renderers** — any backend that walks layout nodes and implements
+  `MeasureContext` (SVG, canvas, …) can replace the PDF renderer.
 
-Sections are detected by `## H2` headings (case-insensitive). Supported sections:
+## License
 
-- **Summary** — a paragraph of plain text
-- **Work Experience** — `### Role @ Company` entries with an italic date/location line and bullet points
-- **Education** — `### Degree | Institution` entries with an italic date range
-- **Skills** — bold category labels followed by a comma-separated list (`**Languages:** Go, Rust`)
-- **Projects** — `### Project Name` entries with an optional italic link line, optional description paragraph, and bullet points
-
-## Project structure
-
-```
-src/
-├── index.ts                  # CLI entry point (Commander)
-├── types/
-│   └── resume.ts             # Shared TypeScript interfaces
-├── parser/
-│   ├── index.ts              # Orchestrates parsing → Resume object
-│   ├── frontmatter.ts        # gray-matter wrapper
-│   ├── markdown.ts           # remark AST builder
-│   └── sections/
-│       ├── summary.ts
-│       ├── experience.ts
-│       ├── education.ts
-│       ├── skills.ts
-│       └── projects.ts
-├── renderer/
-│   ├── index.ts              # Orchestrates rendering
-│   ├── document.ts           # PDFKit document factory + save helper
-│   ├── theme.ts              # Fonts, colors, sizes, spacing constants
-│   └── sections/
-│       ├── header.ts
-│       ├── summary.ts
-│       ├── experience.ts
-│       ├── education.ts
-│       ├── skills.ts
-│       └── projects.ts
-└── utils/
-    ├── mdast.ts              # Slice AST nodes by H2 heading
-    └── pdf.ts                # Low-level PDFKit drawing helpers
-```
-
-## Dependencies
-
-| Package | Purpose |
-|---------|---------|
-| `pdfkit` | Programmatic PDF generation |
-| `commander` | CLI argument parsing |
-| `gray-matter` | YAML frontmatter extraction |
-| `unified` + `remark-parse` | Markdown → MDAST |
-| `unist-util-visit` | AST traversal |
-| `mdast-util-to-string` | Extract plain text from AST nodes |
-
-## Requirements
-
-- Node.js 18+
-- pnpm 11+
+MIT

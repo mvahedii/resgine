@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "types": ["node"]
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../core" },
+    { "path": "../layout" },
+    { "path": "../schema" },
+    { "path": "../validator" },
+    { "path": "../pdf-renderer" },
+    { "path": "../theme-modern" }
+  ]
+}

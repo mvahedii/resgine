@@ -1,0 +1,21 @@
+{
+  "name": "@resgine/validator",
+  "version": "0.1.0",
+  "description": "Resume validation, structured diagnostics, and IR normalization for Resgine",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "dependencies": {
+    "@resgine/core": "workspace:*",
+    "@resgine/schema": "workspace:*",
+    "zod": "^4.0.0"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "./resume.schema.json",
+  "schemaVersion": "1.0",
+  "sections": [
+    {
+      "type": "personal-info",
+      "data": {
+        "name": "Ada Lovelace",
+        "headline": "Senior Software Engineer",
+        "email": "ada@example.com",
+        "phone": "+1 (555) 014-1815",
+        "location": "London, United Kingdom",
+        "links": [
+          { "label": "github.com/ada", "url": "https://github.com/ada" },
+          { "label": "ada.dev", "url": "https://ada.dev" },
+          { "label": "linkedin.com/in/ada", "url": "https://linkedin.com/in/ada" }
+        ]
+      }
+    },
+    {
+      "type": "summary",
+      "data": {
+        "body": "Backend-leaning engineer with nine years building reliable, high-throughput systems. I care about clear interfaces, deterministic behaviour, and tooling that makes the right thing easy.\n\nComfortable across the stack but happiest designing data pipelines, APIs, and the abstractions that hold a codebase together as it grows."
+      }
+    },
+    {
+      "type": "experience",
+      "data": {
+        "items": [
+          {
+            "role": "Senior Software Engineer",
+            "company": "Difference Engine Co.",
+            "period": "2021 — Present",
+            "location": "Remote",
+            "highlights": [
+              "Designed a schema-driven document pipeline that cut template maintenance time by 70% across twelve product teams.",
+              "Led the migration of the rendering service to a deterministic, browser-free architecture, removing a class of flaky output bugs.",
+              "Mentored four engineers; two were promoted within the year."
+            ]
+          },
+          {
+            "role": "Software Engineer",
+            "company": "Analytical Systems Ltd.",
+            "period": "2017 — 2021",
+            "location": "London, UK",
+            "highlights": [
+              "Built the company's first typed validation layer, reducing production data-shape incidents to near zero.",
+              "Owned the public API gateway serving 40M requests/day at p99 latency under 80ms."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "education",
+      "data": {
+        "items": [
+          {
+            "degree": "B.Sc. Computer Science",
+            "institution": "University of London",
+            "period": "2013 — 2016",
+            "details": "First-class honours"
+          }
+        ]
+      }
+    },
+    {
+      "type": "skills",
+      "data": {
+        "items": [
+          {
+            "category": "Languages",
+            "items": ["TypeScript", "Go", "Python", "SQL"]
+          },
+          {
+            "category": "Platforms",
+            "items": ["Node.js", "PostgreSQL", "Redis", "AWS"]
+          },
+          {
+            "category": "Practices",
+            "items": ["Distributed systems", "API design", "CI/CD", "Observability"]
+          }
+        ]
+      }
+    },
+    {
+      "type": "projects",
+      "data": {
+        "items": [
+          {
+            "name": "Resgine",
+            "url": "https://github.com/ada/resgine",
+            "description": "A schema-driven, themeable JSON resume rendering engine with a PDFKit backend.",
+            "highlights": [
+              "Pluggable theme system: themes emit abstract layout nodes, never PDF calls.",
+              "Zod-backed validation with JSON Schema export for editor autocomplete."
+            ]
+          },
+          {
+            "name": "Tabulate",
+            "url": "https://github.com/ada/tabulate",
+            "description": "A tiny, deterministic CSV-to-report library used in three internal tools."
+          }
+        ]
+      }
+    }
+  ]
+}
