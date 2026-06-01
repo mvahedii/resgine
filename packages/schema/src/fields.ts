@@ -46,7 +46,6 @@ type OptionalKeys<S extends FieldShape> = {
 
 type Prettify<T> = { [K in keyof T]: T[K] } & {};
 
-/** Resolve a field shape into a plain object type with correct optionality. */
 export type InferFields<S extends FieldShape> = Prettify<
   { [K in RequiredKeys<S>]: InferValue<S[K]> } & {
     [K in OptionalKeys<S>]?: InferValue<S[K]>;
