@@ -28,7 +28,7 @@
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Full name"
+                    "description": "FirstName and LastName"
                   },
                   "headline": {
                     "type": "string",

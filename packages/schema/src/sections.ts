@@ -14,7 +14,7 @@ export const personalInfoSection = defineSection({
   type: 'personal-info',
   title: 'Personal Info',
   fields: {
-    name: text({ required: true, description: 'Full name' }),
+    name: text({ required: true, description: 'FirstName and LastName' }),
     headline: text({
       required: true,
       description: 'Professional headline, e.g. "Senior Software Engineer"',

@@ -3,3 +3,6 @@ dist/
 *.tsbuildinfo
 examples/*.pdf
 .claude/*
+
+.DS_Store
+examples/.DS_Store
